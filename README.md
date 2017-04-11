@@ -1,11 +1,7 @@
 # Burmese word segmentation using CRF++
 
-## Experiment
+## The experiment
 
     ./prepare_data.pl *-gold.txt
     ./run.sh
-
-## NOTES
-
-    ./data_for_foma.sh
 
