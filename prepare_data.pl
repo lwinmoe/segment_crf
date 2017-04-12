@@ -11,6 +11,10 @@ my $numOfSentences = 0;
 my $totalWords = 0;
 my $totalSyllables = 0;
 
+my $numOfTestSentences = 0;
+my $totalTestWords = 0;
+my $totalTestSyllables = 0;
+
 my $trainingF = "training.txt";
 my $testF = "test.txt";
 
@@ -33,6 +37,7 @@ foreach my $name (@ARGV) {
             $numOfSentences++;
             my $flag = 0;
             $flag = 1 if ($numOfSentences % 10) == 0;
+            $numOfTestSentences++ if $flag == 1;
             $sentence =~ s/^\|//sg;
             $sentence =~ s/\t//sg;
             my $s = Encode::encode_utf8($sentence);
@@ -40,12 +45,14 @@ foreach my $name (@ARGV) {
             my @words = split(/\|/, $sentence);
             my $numOfWords = scalar @words;
             $totalWords += $numOfWords;
+            $totalTestWords += $numOfWords if $flag == 1;
             foreach my $word (@words) {
                 chomp;
                 my $word = syllabify($word);
                 my @syllables = split(/\|/,$word); 
                 my $numOfSyllables = scalar @syllables;
                 $totalSyllables += $numOfSyllables;
+                $totalTestSyllables += $numOfSyllables if $flag == 1;
                 $word = Encode::encode_utf8($word);
                 #print qq($word\n);
                 #print qq($numOfSyllables\n);
@@ -95,3 +102,6 @@ close TEST;
 print STDERR qq(Number of sentences: $numOfSentences\n);
 print STDERR qq(Total number of words: $totalWords\n);
 print STDERR qq(Total number of syllables: $totalSyllables\n);
+print STDERR qq(Number of test sentences: $numOfTestSentences\n);
+print STDERR qq(Total number of test words: $totalTestWords\n);
+print STDERR qq(Total number of test syllables: $totalTestSyllables\n);
